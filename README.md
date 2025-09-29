@@ -1,5 +1,7 @@
 # Consul API Gateway Demo
 
+![Consul API Gateway Demo](consul-api-gateway.gif)
+
 A minimal Kubernetes API Gateway setup using Consul on k3d. Ready in 2 minutes.
 
 **Versions:** Consul v1.21.4 | Kubernetes v1.31.5 | Gateway API v1.0.0
