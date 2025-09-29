@@ -1,0 +1,11 @@
+server:
+  replicas: 1
+  
+client:
+  enabled: true
+  
+connectInject:
+  enabled: true
+
+ui:
+  enabled: true
