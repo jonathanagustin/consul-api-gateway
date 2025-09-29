@@ -63,6 +63,9 @@ sudo ./scripts/cleanup.sh
 
 ## What This Demo Does
 
+> [!NOTE]
+> This demo provides a production-like API Gateway setup that runs locally on your machine.
+
 Sets up a complete API Gateway pattern with:
 - Local Kubernetes cluster (k3d)
 - Consul service mesh with automatic sidecar injection
@@ -71,6 +74,9 @@ Sets up a complete API Gateway pattern with:
 - Zero-trust networking (only gateway can reach the app)
 
 **Time to deploy:** ~2 minutes | **Time to destroy:** ~5 seconds
+
+> [!TIP]
+> The entire deployment takes about 2 minutes from start to finish!
 
 ### Deployment Timeline
 
@@ -140,6 +146,9 @@ kubectl describe gateway -n consul api-gateway
 ### Browser Shows "Connection Refused"
 
 **Problem:** Browser can't connect to http://www.cluster.local
+
+> [!IMPORTANT]
+> k3d's loadbalancer may only listen on IPv6 localhost (::1), not IPv4 (127.0.0.1)
 
 **Solution:** Ensure both IPv4 and IPv6 entries exist:
 ```bash
@@ -308,6 +317,9 @@ spec:
         - containerPort: 80
 ```
 
+> [!CAUTION]
+> The `consul.hashicorp.com/connect-inject: "true"` annotation MUST be on the Pod template metadata, NOT on the Deployment metadata!
+
 **Key points:**
 - `consul.hashicorp.com/connect-inject: "true"` - Triggers automatic sidecar injection
 - Annotation must be on Pod template metadata, not Deployment metadata
@@ -461,6 +473,9 @@ spec:
 
 ## Important Gotchas
 
+> [!WARNING]
+> These are common issues that can prevent your gateway from working correctly
+
 ### Naming Must Match Everywhere
 
 Think of Consul like a **very strict post office** - if the names don't match exactly, your mail (traffic) won't get delivered:
@@ -477,6 +492,9 @@ ServiceAccount:     "example-app"  ←─┘  driver's license, and bills
 - Like ordering pizza to "John Smith" but mailbox says "J. Smith" - delivery fails!
 
 ### Cross-Namespace References
+
+> [!IMPORTANT]
+> ReferenceGrant must be in the TARGET namespace (consul), not the source namespace!
 
 ```mermaid
 graph TB
@@ -547,6 +565,9 @@ This demo uses:
 - **Gateway API:** v1.0.0
 
 ## Requirements
+
+> [!NOTE]
+> The deploy script will automatically install k3d, helm, and kubectl if they're missing!
 
 Auto-installed by deploy script:
 - k3d (Kubernetes)
