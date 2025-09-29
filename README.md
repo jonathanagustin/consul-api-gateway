@@ -418,25 +418,26 @@ graph TB
 
 Gateway wildcard (`*.cluster.local`) must match HTTPRoute hostname (`www.cluster.local`):
 
+**✅ Examples that Work:**
 ```mermaid
 graph TB
-    subgraph "Examples that Work ✅"
-        GW1["Gateway<br/>*.example.com"]
-        RT1["HTTPRoute<br/>app.example.com"]
-        RT2["HTTPRoute<br/>api.example.com"]
-        GW1 --> RT1
-        GW1 --> RT2
-    end
+    GW1["Gateway<br/>*.example.com"]
+    RT1["HTTPRoute<br/>app.example.com"]
+    RT2["HTTPRoute<br/>api.example.com"]
+    GW1 --> RT1
+    GW1 --> RT2
+```
+
+**❌ Examples that Fail:**
+```mermaid
+graph TB
+    GW2["Gateway<br/>*.example.com"]
+    RT3["HTTPRoute<br/>example.com"]
+    GW2 -.->|"No subdomain!"| RT3
     
-    subgraph "Examples that Fail ❌"
-        GW2["Gateway<br/>*.example.com"]
-        RT3["HTTPRoute<br/>example.com"]
-        GW2 -.->|"No subdomain!"| RT3
-        
-        GW3["Gateway<br/>api.example.com"]
-        RT4["HTTPRoute<br/>www.example.com"]
-        GW3 -.->|"Different subdomain!"| RT4
-    end
+    GW3["Gateway<br/>api.example.com"]
+    RT4["HTTPRoute<br/>www.example.com"]
+    GW3 -.->|"Different subdomain!"| RT4
 ```
 
 ### Sidecar Injection
