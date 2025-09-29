@@ -227,18 +227,18 @@ Think of your microservices architecture like a **secure office building**:
 
 ```mermaid
 graph LR
-    subgraph "Without API Gateway - Security Nightmare"
+    subgraph "Without Gateway"
         MA1[Mobile App]
         MA1 -->|Port 3001| US1[User Service]
         MA1 -->|Port 3002| OS1[Order Service]
         MA1 -->|Port 3003| PS1[Payment Service]
     end
 ```
-❌ **Direct exposure of all services, multiple attack vectors, no centralized control**
+❌ **Security Nightmare:** Direct exposure of all services, multiple attack vectors, no centralized control
 
 ```mermaid
 graph LR
-    subgraph "With API Gateway - Secure Architecture"
+    subgraph "With Gateway"
         MA2[Mobile App]
         GW[API Gateway<br/>:443]
         MA2 -->|HTTPS| GW
@@ -257,7 +257,7 @@ graph LR
         GW -->|Encrypted| PS2
     end
 ```
-✅ **Single entry point, encrypted internal traffic, centralized security policies**
+✅ **Secure Architecture:** Single entry point, encrypted internal traffic, centralized security policies
 
 ## How This Demo Works
 
