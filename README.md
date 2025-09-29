@@ -281,6 +281,39 @@ sequenceDiagram
 
 ## Key Configuration Files
 
+### Deployment (example-app/templates/deployment.yaml)
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example-app
+  namespace: example-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: example-app
+  template:
+    metadata:
+      labels:
+        app: example-app
+      annotations:
+        consul.hashicorp.com/connect-inject: "true"  # ← Critical annotation
+    spec:
+      serviceAccountName: example-app
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+```
+
+**Key points:**
+- `consul.hashicorp.com/connect-inject: "true"` - Triggers automatic sidecar injection
+- Annotation must be on Pod template metadata, not Deployment metadata
+- ServiceAccount name must match the service name for proper mesh identity
+- After injection, pod will have 2 containers (nginx + consul-dataplane sidecar)
+
 ### Gateway (api-gateway/templates/gateway.yaml)
 ```yaml
 apiVersion: gateway.networking.k8s.io/v1beta1
@@ -355,6 +388,56 @@ spec:
 - Must be in the **target** namespace (consul), not source namespace
 - Explicitly allows HTTPRoutes from example-app to reference api-gateway
 - Required for cross-namespace references in Gateway API
+
+### Service (example-app/templates/service.yaml)
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: example-app
+  namespace: example-app
+spec:
+  selector:
+    app: example-app
+  ports:
+  - port: 80
+    targetPort: 80
+```
+
+**Key points:**
+- Service name must match ServiceDefaults and ServiceIntentions names
+- Used by HTTPRoute as the backend reference
+- Standard Kubernetes service configuration
+
+### ServiceAccount (example-app/templates/serviceaccount.yaml)
+```yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: example-app
+  namespace: example-app
+```
+
+**Key points:**
+- Must match the service name for Consul service mesh identity
+- Referenced in deployment's `serviceAccountName`
+- Required for proper service mesh authorization
+
+### ServiceDefaults (example-app/templates/servicedefaults.yaml)
+```yaml
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceDefaults
+metadata:
+  name: example-app
+  namespace: example-app
+spec:
+  protocol: http
+```
+
+**Key points:**
+- Configures how Consul treats this service in the mesh
+- Name must match the Kubernetes Service name exactly
+- Protocol specification enables proper proxy configuration
 
 ### ServiceIntentions (example-app/templates/serviceintentions.yaml)
 ```yaml
