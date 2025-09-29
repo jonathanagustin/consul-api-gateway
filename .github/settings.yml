@@ -1,0 +1,122 @@
+# GitHub repository settings managed by Probot Settings app
+# https://github.com/probot/settings
+
+repository:
+  # Repository name
+  name: consul-api-gateway
+  
+  # Repository description
+  description: "Minimal Kubernetes API Gateway setup using Consul on k3d - Ready in 2 minutes"
+  
+  # Repository homepage
+  homepage: ""
+  
+  # Topics/tags
+  topics:
+    - consul
+    - kubernetes
+    - k3d
+    - api-gateway
+    - service-mesh
+    - gateway-api
+    - demo
+    - tutorial
+  
+  # Private or public
+  private: false
+  
+  # Enable/disable features
+  has_issues: true
+  has_projects: false
+  has_wiki: false
+  has_downloads: true
+  
+  # Default branch
+  default_branch: main
+  
+  # Allow merge options
+  allow_squash_merge: true
+  allow_merge_commit: true
+  allow_rebase_merge: true
+  
+  # Delete head branches automatically after merge
+  delete_branch_on_merge: true
+  
+  # Enable automated security fixes
+  enable_automated_security_fixes: true
+  enable_vulnerability_alerts: true
+  
+  # Allow forking
+  allow_forking: true
+
+# Labels for issues and PRs
+labels:
+  - name: bug
+    color: d73a4a
+    description: "Something isn't working"
+    
+  - name: documentation
+    color: 0075ca
+    description: "Improvements or additions to documentation"
+    
+  - name: enhancement
+    color: a2eeef
+    description: "New feature or request"
+    
+  - name: good first issue
+    color: 7057ff
+    description: "Good for newcomers"
+    
+  - name: help wanted
+    color: 008672
+    description: "Extra attention is needed"
+    
+  - name: question
+    color: d876e3
+    description: "Further information is requested"
+    
+  - name: wontfix
+    color: ffffff
+    description: "This will not be worked on"
+    
+  - name: duplicate
+    color: cfd3d7
+    description: "This issue or pull request already exists"
+    
+  - name: invalid
+    color: e4e669
+    description: "This doesn't seem right"
+
+# Branch protection rules
+branches:
+  - name: main
+    # https://docs.github.com/en/rest/branches/branch-protection
+    protection:
+      # Require PR reviews
+      required_pull_request_reviews:
+        required_approving_review_count: 0
+        dismiss_stale_reviews: false
+        require_code_owner_reviews: false
+        
+      # Require status checks to pass
+      required_status_checks:
+        strict: false
+        contexts: []
+        
+      # Enforce admins
+      enforce_admins: false
+      
+      # Require branches to be up to date
+      required_linear_history: false
+      
+      # Restrictions
+      restrictions: null
+      
+      # Allow force pushes
+      allow_force_pushes: false
+      
+      # Allow deletions
+      allow_deletions: false
+      
+      # Require conversation resolution
+      required_conversation_resolution: false
