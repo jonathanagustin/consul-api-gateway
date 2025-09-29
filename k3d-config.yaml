@@ -1,0 +1,49 @@
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+
+servers: 1
+agents: 0
+
+image: rancher/k3s:v1.31.5-k3s1
+
+ports:
+  - port: 30000-30100:30000-30100
+    nodeFilters:
+      - server:0
+  
+  - port: 80:80
+    nodeFilters:
+      - loadbalancer
+
+volumes: []
+
+options:
+  k3d:
+    wait: true
+    timeout: "60s"
+    disableLoadbalancer: false
+    disableImageVolume: false
+    
+  k3s:
+    extraArgs:
+      - arg: --disable=traefik
+        nodeFilters:
+          - server:*
+  kubeconfig:
+    updateDefaultKubeconfig: true
+    switchCurrentContext: true
+  
+  runtime:
+    gpuRequest: ""
+    labels:
+      - label: environment=development
+        nodeFilters:
+          - server:*
+          - agent:*
+
+registries:
+  config: |
+    mirrors:
+      "docker.io":
+        endpoint:
+          - "https://registry-1.docker.io"
